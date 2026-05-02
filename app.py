@@ -11,7 +11,13 @@ app = Flask(__name__)
 app.secret_key = 'sigelfa_super_secreta_2024'
 
 # Configuración de la base de datos
-CONN_STR = 'Driver={SQL Server};Server=DEMONBANE;Database=SIGELFA;UID=LoginArb1;PWD=ArbPassword123;'
+CONN_STR = (
+    'Driver={ODBC Driver 17 for SQL Server};'
+    'Server=DEMONBANE;'
+    'Database=SIGELFA;'
+    'UID=LoginArb1;'
+    'PWD=ArbPassword123;'
+)
 
 def get_db_connection():
     return pyodbc.connect(CONN_STR)
