@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calendario y Resultados Oficiales - SIGELFA</title>
+    <style>
+        :root {
+            --primary: #1e293b;
+            --accent: #3b82f6;
+            --bg: #f1f5f9;
+            --success: #10b981;
+        }
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; background: var(--bg); margin: 0; color: #334155; }
+        
+        .navbar { background: var(--primary); color: white; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; }
+        .navbar a { color: white; text-decoration: none; font-weight: bold; border: 1px solid white; padding: 5px 15px; border-radius: 5px; }
+
+        .container { max-width: 900px; margin: 2rem auto; padding: 0 1rem; }
+        h1 { text-align: center; color: var(--primary); margin-bottom: 2rem; }
+
+        .partido-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 15px;
+            display: grid;
+            grid-template-columns: 1fr 150px 1fr;
+            align-items: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            border-left: 6px solid var(--primary);
+        }
+
+        .equipo { font-size: 1.2rem; font-weight: bold; color: var(--primary); }
+        .local { text-align: right; }
+        .visita { text-align: left; }
+
+        .marcador-box {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .puntos {
+            background: var(--primary);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 8px;
+            font-size: 1.5rem;
+            font-weight: 800;
+            min-width: 70px;
+        }
+
+        .vs-badge {
+            color: #94a3b8;
+            font-weight: bold;
+            font-style: italic;
+        }
+
+        .meta-info {
+            font-size: 0.8rem;
+            color: #64748b;
+            margin-top: 5px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .sede-tag {
+            grid-column: 1 / span 3;
+            margin-top: 15px;
+            padding-top: 10px;
+            border-top: 1px solid #f1f5f9;
+            font-size: 0.85rem;
+            color: #64748b;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .badge-final {
+            font-size: 0.7rem;
+            background: #d1fae5;
+            color: #065f46;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-weight: bold;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <span style="font-size: 1.2rem;">⚽ SIGELFA</span>
+        <a href="/">Volver al Inicio</a>
+    </nav>
+
+    <div class="container">
+        <h1>Resultados de la Jornada</h1>
+
+        {% for p in partidos %}
+        <div class="partido-card">
+            <div class="equipo local">
+                {{ p.Local }}
+            </div>
+
+            <div class="marcador-box">
+                <div class="meta-info">Jornada {{ p.numJornada }}</div>
+                
+                {% if p.Jugado > 0 %}
+                    <div class="puntos">{{ p.GolesL }} - {{ p.GolesV }}</div>
+                    <span class="badge-final">FINALIZADO</span>
+                {% else %}
+                    <div class="puntos" style="background: #e2e8f0; color: #94a3b8;">
+                        <span class="vs-badge">VS</span>
+                    </div>
+                    <span style="font-size: 0.7rem; color: #f59e0b; font-weight: bold;">PROGRAMADO</span>
+                {% endif %}
+
+                <div class="meta-info" style="font-weight: bold;">{{ p.fechaPart }}</div>
+            </div>
+
+            <div class="equipo visita">
+                {{ p.Visita }}
+            </div>
+
+            <div class="sede-tag">
+                📍 <strong>Sede:</strong> {{ p.sedeReal }} | ⏰ <strong>Hora:</strong> {{ p.horaPart }}
+            </div>
+        </div>
+        {% endfor %}
+        
+        {% if not partidos %}
+        <div style="text-align: center; padding: 50px; color: #94a3b8;">
+            <p>No hay partidos programados para mostrar en este momento.</p>
+        </div>
+        {% endif %}
+    </div>
+
+</body>
+</html>

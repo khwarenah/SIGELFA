@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Programar Partidos - SIGELFA</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; background-color: #f3f4f6; padding: 20px; }
+        .card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin-bottom: 20px; }
+        .juego-row { display: grid; grid-template-columns: 2fr 1fr 1fr 1.5fr 1.5fr 1fr; gap: 10px; align-items: end; border-bottom: 1px solid #eee; padding: 10px 0; }
+        label { font-size: 12px; font-weight: bold; color: #666; }
+        input, select { width: 100%; padding: 5px; border-radius: 4px; border: 1px solid #ccc; }
+        .btn-save { background: #10b981; color: white; border: none; padding: 8px; border-radius: 4px; cursor: pointer; }
+        .vs-badge { font-weight: bold; color: #ef4444; }
+    </style>
+</head>
+<body>
+    <a href="/">← Volver</a>
+    <h2>Logística de Partidos</h2>
+
+    <div class="card">
+        <h3>Enfrentamientos Pendientes de Horario</h3>
+        {% for j in jornadas %}
+        <form method="POST" class="juego-row">
+            <input type="hidden" name="numJornada" value="{{ j.numJornada }}">
+            <input type="hidden" name="numEqLocal" value="{{ j.numEqLocal }}">
+            <input type="hidden" name="numEqVisita" value="{{ j.numEqVisita }}">
+            <input type="hidden" name="nomCortoCat" value="{{ j.nomCortoCat }}">
+            <input type="hidden" name="perTorneo" value="{{ j.perTorneo }}">
+            <input type="hidden" name="cveLiga" value="{{ j.cveLiga }}">
+
+            <div>
+                <strong>{{ j.numEqLocal }}</strong> <span class="vs-badge">VS</span> <strong>{{ j.numEqVisita }}</strong>
+                <br><small>{{ j.nomCortoCat }} - J{{ j.numJornada }}</small>
+            </div>
+            
+            <div><label>Fecha</label><input type="date" name="fechaPart" required></div>
+            <div><label>Hora</label><input type="time" name="horaPart" required></div>
+            
+            <div>
+                <label>Sede / Cancha</label>
+                <select name="cancha_ud" required>
+                    {% for c in canchas %}
+                    <option value="{{ c.numCancha }}|{{ c.cveUd }}">{{ c.nombUd }} - C{{ c.numCancha }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div>
+                <label>Árbitro</label>
+                <select name="numArb" required>
+                    {% for a in arbitros %}
+                    <option value="{{ a.numArb }}">{{ a.nombre }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <button type="submit" class="btn-save">Programar</button>
+        </form>
+        {% endfor %}
+    </div>
+
+    <div class="card">
+        <h3>Calendario Oficial Programado</h3>
+        <table width="100%" border="1" style="border-collapse: collapse; text-align: center;">
+            <tr style="background: #eee;">
+                <th>Fecha/Hora</th><th>Encuentro</th><th>Categoría</th><th>Sede</th><th>Árbitro</th>
+            </tr>
+            {% for p in partidos %}
+            <tr>
+                <td>{{ p.fechaPart }} {{ p.horaPart }}</td>
+                <td>{{ p.numEqLocal }} vs {{ p.numEqVisita }}</td>
+                <td>{{ p.nomCortoCat }}</td>
+                <td>{{ p.cveUd }} - C{{ p.numCancha }}</td>
+                <td>{{ p.numArb }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</body>
+</html>

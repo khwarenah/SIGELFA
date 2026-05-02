@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menú Principal - SIGELFA</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f3f4f6;
+            margin: 0;
+            padding: 20px;
+        }
+        .dashboard-container {
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #e5e7eb;
+            padding-bottom: 20px;
+            margin-bottom: 20px;
+        }
+        .header h1 { margin: 0; color: #1f2937; }
+        .user-info { color: #6b7280; font-size: 16px; }
+        .badge {
+            background-color: #3b82f6;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+        .logout-btn {
+            background-color: #ef4444; color: white;
+            padding: 8px 16px; text-decoration: none;
+            border-radius: 5px; font-weight: bold;
+        }
+        .logout-btn:hover { background-color: #dc2626; }
+        
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+        .menu-card {
+            background-color: #f9fafb;
+            border: 1px solid #e5e7eb;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            text-decoration: none;
+            color: #374151;
+            font-weight: bold;
+            transition: all 0.3s;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .menu-card:hover {
+            background-color: #e5e7eb;
+            transform: translateY(-2px);
+        }
+        
+        /* Colores por Rol */
+        .card-admin { border-top: 4px solid #8b5cf6; }
+        .card-arb { border-top: 4px solid #f59e0b; }
+        .card-all { border-top: 4px solid #10b981; }
+        .card-info { border-top: 4px solid #3b82f6; }
+
+        /* Estilo para la Zona de Peligro */
+        .danger-zone {
+            margin-top: 40px;
+            padding: 20px;
+            border: 2px dashed #ef4444;
+            border-radius: 10px;
+            background-color: #fef2f2;
+        }
+        .danger-zone h3 { color: #b91c1c; margin-top: 0; }
+        .btn-reset {
+            background-color: #ef4444;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        .btn-reset:hover { background-color: #b91c1c; }
+
+        /* Mensajes Flash */
+        .flash-msg {
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            text-align: center;
+            font-weight: bold;
+        }
+        .success { background-color: #d1fae5; color: #065f46; }
+    </style>
+</head>
+<body>
+
+<div class="dashboard-container">
+    <div class="header">
+        <div>
+            <h1>Dashboard SIGELFA</h1>
+            <div class="user-info">
+                Bienvenido, <strong>{{ session['nombre'] }}</strong> 
+                <span class="badge">{{ rol }}</span>
+            </div>
+        </div>
+        <a href="/logout" class="logout-btn">Cerrar Sesión</a>
+    </div>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="flash-msg {{ category }}">{{ message }}</div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    <h3>¿Qué deseas hacer?</h3>
+    
+    <div class="menu-grid">
+        
+        {% if rol == 'Admin' %}
+            <a href="/admin/generar_jornadas" class="menu-card card-admin">Generar Jornadas (Script)</a>
+            <a href="/admin/equipos" class="menu-card card-admin">Gestionar Equipos</a>
+            <a href="/admin/jugadores" class="menu-card card-admin">Gestionar Jugadores</a>
+            <a href="/admin/arbitros" class="menu-card card-admin">Gestionar Árbitros</a>
+            <a href="/admin/sedes" class="menu-card card-admin">Gestionar Sedes y Canchas</a>
+            <a href="/admin/conceptos" class="menu-card card-admin">Gestión de Conceptos</a>
+            <a href="/admin/movimientos" class="menu-card card-admin">Ingresos/Gastos</a>
+            <a href="/admin/programar_partidos" class="menu-card card-admin">Programar Partidos</a>
+        {% endif %}
+
+        {% if rol == 'Admin' or rol == 'Arbitro' %}
+            <a href="/arbitro/cedula" class="menu-card card-arb">📝 Cédula Arbitral</a>
+        {% endif %}
+
+        <a href="/jornadas_resultados" class="menu-card card-all">📊 Jornadas y Resultados</a>
+        <a href="/calendario_publico" class="menu-card card-all">📅 Calendario Público</a>
+        <a href="/ver_equipos" class="menu-card card-info">👥 Ver Equipos e Integrantes</a>
+    </div>
+
+    {% if rol == 'Admin' %}
+    <div class="danger-zone">
+        <h3>⚠️ Zona de Peligro</h3>
+        <p style="font-size: 0.85rem; color: #7f1d1d;">
+            Al presionar el botón inferior, se eliminarán todos los registros de equipos, jugadores, partidos y resultados. 
+            <strong>Esta acción es irreversible y vaciará la base de datos para una nueva temporada.</strong>
+        </p>
+        <form action="/admin/reset_database" method="POST" onsubmit="return confirm('¿ESTÁS ABSOLUTAMENTE SEGURO? Se borrará TODA la información de la liga. Esta acción no se puede deshacer.')">
+            <button type="submit" class="btn-reset">🗑️ Reiniciar Temporada (Borrar Todo)</button>
+        </form>
+    </div>
+    {% endif %}
+</div>
+
+</body>
+</html>

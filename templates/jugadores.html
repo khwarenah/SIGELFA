@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Gestión de Jugadores - SIGELFA</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; background-color: #f3f4f6; padding: 20px; }
+        .container { max-width: 1000px; margin: 0 auto; }
+        .card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin-bottom: 20px; }
+        .form-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; }
+        input, select { width: 100%; padding: 8px; border: 1px solid #d1d5db; border-radius: 4px; box-sizing: border-box; }
+        button { padding: 10px; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; }
+        .btn-add { background-color: #10b981; color: white; width: 100%; margin-top: 20px; }
+        .btn-del { background-color: #ef4444; color: white; padding: 5px 10px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #e5e7eb; }
+        .badge-age { background: #dbeafe; color: #1e40af; padding: 2px 8px; border-radius: 10px; font-weight: bold; }
+        .alert { padding: 10px; border-radius: 4px; margin-bottom: 15px; font-weight: bold; }
+        .alert-success { background-color: #d1fae5; color: #065f46; }
+        .alert-error { background-color: #fee2e2; color: #991b1b; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <a href="/" style="text-decoration: none; color: #3b82f6; font-weight: bold; display: inline-block; margin-bottom: 15px;">← Volver al Menú</a>
+    
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <div class="card">
+        <h2>Inscribir Jugador</h2>
+        <form method="POST" action="/admin/jugadores">
+            <input type="hidden" name="accion" value="crear">
+            <div class="form-grid">
+                <div><label>Clave Jugador (Ej: J001)</label><input type="text" name="numJug" required maxlength="4"></div>
+                <div><label>Nombre(s)</label><input type="text" name="nomJug" required maxlength="20"></div>
+                <div><label>Apellido Paterno</label><input type="text" name="apPatJug" required maxlength="20"></div>
+                <div><label>Apellido Materno</label><input type="text" name="apMatJug" maxlength="20"></div>
+                <div><label>Fecha de Nacimiento</label><input type="date" name="fNacJug" required></div>
+                <div>
+                    <label>Asignar a Equipo</label>
+                    <select name="cveEquipo" required>
+                        <option value="">-- Seleccionar --</option>
+                        {% for eq in equipos %}
+                        <option value="{{ eq.cveEquipo }}">{{ eq.nombEquipo }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <button type="submit" class="btn-add">Registrar Jugador</button>
+        </form>
+    </div>
+
+    <div class="card">
+        <h2>Padrón de Jugadores</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Clave</th>
+                    <th>Nombre Completo</th>
+                    <th>Edad</th>
+                    <th>Cve Equipo</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for jug in jugadores %}
+                <tr>
+                    <td><strong>{{ jug.numJug }}</strong></td>
+                    <td>{{ jug.nombre }}</td>
+                    <td><span class="badge-age">{{ jug.edad }} años</span></td>
+                    <td>{{ jug.equipo }}</td>
+                    <td>
+                        <form method="POST" action="/admin/jugadores" style="display:inline;">
+                            <input type="hidden" name="accion" value="eliminar">
+                            <input type="hidden" name="numJug" value="{{ jug.numJug }}">
+                            <button type="submit" class="btn-del" onclick="return confirm('¿Estás seguro de eliminar a este jugador?')">Borrar</button>
+                        </form>
+                    </td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="5" style="text-align: center; color: #6b7280;">No hay jugadores registrados.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>

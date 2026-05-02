@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Movimientos - SIGELFA</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; background-color: #f3f4f6; padding: 20px; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin-bottom: 20px; }
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; }
+        input, select, button { width: 100%; padding: 8px; border-radius: 4px; box-sizing: border-box; }
+        input, select { border: 1px solid #d1d5db; }
+        .btn-add { background-color: #3b82f6; color: white; font-weight: bold; margin-top: 15px; border: none; cursor: pointer; }
+        .btn-del { background-color: #ef4444; color: white; padding: 5px 10px; border: none; cursor: pointer; }
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        th, td { padding: 10px; text-align: left; border-bottom: 1px solid #e5e7eb; }
+        .monto { color: #059669; font-weight: bold; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <a href="/" style="text-decoration: none; color: #3b82f6;">← Volver</a>
+    <div class="card">
+        <h2>Registrar Movimiento Financiero</h2>
+        <form method="POST">
+            <input type="hidden" name="accion" value="crear">
+            <div class="form-grid">
+                <div>
+                    <label>Concepto</label>
+                    <select name="cveConc" required>
+                        <option value="">-- Seleccionar --</option>
+                        {% for c in conceptos %}
+                        <option value="{{ c.cveConc }}">{{ c.descConc }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div><label>Fecha</label><input type="date" name="fechaMov" required></div>
+                <div><label>Monto ($)</label><input type="number" step="0.01" name="montoMov" required></div>
+            </div>
+            <button type="submit" class="btn-add">Registrar Movimiento</button>
+        </form>
+    </div>
+
+    <div class="card">
+        <h2>Historial de Movimientos</h2>
+        <table>
+            <tr><th>Folio (Num)</th><th>Concepto</th><th>Fecha</th><th>Monto</th><th>Acción</th></tr>
+            {% for m in movimientos %}
+            <tr>
+                <td>{{ m.numMov }}</td>
+                <td>{{ m.descConc }} ({{ m.cveConc }})</td>
+                <td>{{ m.fechaMov }}</td>
+                <td class="monto">${{ "%.2f"|format(m.montoMov) }}</td>
+                <td>
+                    <form method="POST" style="display:inline;">
+                        <input type="hidden" name="accion" value="eliminar">
+                        <input type="hidden" name="numMov" value="{{ m.numMov }}">
+                        <input type="hidden" name="cveConc" value="{{ m.cveConc }}">
+                        <button type="submit" class="btn-del">Borrar</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</div>
+</body>
+</html>

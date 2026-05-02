@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cédula Arbitral - SIGELFA</title>
+    <style>
+        :root {
+            --primary: #1e293b;
+            --accent: #3b82f6;
+            --danger: #ef4444;
+            --success: #10b981;
+            --bg: #f8fafc;
+        }
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; background: var(--bg); margin: 0; color: #334155; }
+        
+        /* Navbar */
+        .navbar { 
+            background: var(--primary); color: white; padding: 1rem 2rem; 
+            display: flex; justify-content: space-between; align-items: center; 
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1); 
+        }
+        .navbar a { color: white; text-decoration: none; font-weight: 600; padding: 8px 16px; border-radius: 6px; }
+        .btn-new { background: var(--accent); }
+
+        .container { max-width: 1100px; margin: 2rem auto; padding: 0 1rem; }
+        
+        /* Cards */
+        .card { background: white; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); padding: 20px; margin-bottom: 2rem; }
+        h2 { margin-top: 0; color: var(--primary); border-bottom: 2px solid #f1f5f9; padding-bottom: 10px; }
+
+        /* Tabla de Partidos */
+        table { width: 100%; border-collapse: collapse; }
+        th { text-align: left; background: #f1f5f9; padding: 12px; font-size: 0.8rem; text-transform: uppercase; }
+        td { padding: 12px; border-bottom: 1px solid #f1f5f9; }
+        
+        .status { padding: 4px 8px; border-radius: 20px; font-size: 0.75rem; font-weight: bold; }
+        .status-ok { background: #d1fae5; color: #065f46; }
+        .status-pend { background: #fef3c7; color: #92400e; }
+
+        /* Grid de Cédula */
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 20px; }
+        .team-header { padding: 12px; border-radius: 8px; color: white; text-align: center; font-weight: bold; margin-bottom: 10px; }
+        .local-bg { background: var(--accent); }
+        .visita-bg { background: var(--danger); }
+
+        .input-row { 
+            display: flex; align-items: center; justify-content: space-between; 
+            padding: 10px; border-bottom: 1px solid #f1f5f9; 
+        }
+        .empty-msg { 
+            background: #fff1f2; color: #991b1b; padding: 15px; 
+            border-radius: 8px; text-align: center; font-weight: bold; border: 1px solid #fecaca;
+        }
+
+        input[type="number"] { width: 50px; padding: 5px; border: 1px solid #ddd; border-radius: 4px; text-align: center; }
+        select { padding: 5px; border-radius: 4px; border: 1px solid #ddd; }
+
+        /* Footer */
+        .btn-save { 
+            background: var(--success); color: white; border: none; padding: 15px; 
+            width: 100%; border-radius: 8px; font-size: 1.1rem; cursor: pointer; 
+            font-weight: bold; margin-top: 20px;
+        }
+        .btn-del { 
+            background: none; border: 1px solid var(--danger); color: var(--danger); 
+            padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 0.8rem;
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div>
+            <a href="/">🏠 Inicio</a>
+            <span style="margin-left: 20px; opacity: 0.8;">Sistema de Arbitraje</span>
+        </div>
+        <a href="/arbitro/cedula" class="btn-new">+ Nueva Cédula / Limpiar</a>
+    </nav>
+
+    <div class="container">
+        
+        <div class="card">
+            <h2>Gestión de Encuentros</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Jornada</th>
+                        <th>Partido</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for p in partidos %}
+                    <tr>
+                        <td>Jornada {{ p.numJornada }}</td>
+                        <td><strong>{{ p.Local }}</strong> vs <strong>{{ p.Visita }}</strong></td>
+                        <td>
+                            {% if p.Registros > 0 %}
+                                <span class="status status-ok">✓ Capturado</span>
+                            {% else %}
+                                <span class="status status-pend">⌛ Pendiente</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <a href="/arbitro/cedula?id_partido={{p.numJornada}}|{{p.numEqLocal}}|{{p.numEqVisita}}" style="color: var(--accent); font-weight: bold; text-decoration: none;">Editar</a>
+                            {% if p.Registros > 0 %}
+                            | 
+                            <form method="POST" style="display:inline;">
+                                <input type="hidden" name="accion" value="eliminar">
+                                <input type="hidden" name="numJ" value="{{ p.numJornada }}">
+                                <input type="hidden" name="loc" value="{{ p.numEqLocal }}">
+                                <input type="hidden" name="vis" value="{{ p.numEqVisita }}">
+                                <button type="submit" class="btn-del" onclick="return confirm('¿Eliminar todos los datos de este partido?')">Borrar</button>
+                            </form>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        {% if partido_sel %}
+        <div class="card">
+            <div style="display: flex; justify-content: space-between; align-items: center; background: #1e293b; color: white; padding: 12px; border-radius: 8px;">
+                <span>PARTIDO: {{ partido_sel.numEqLocal }} VS {{ partido_sel.numEqVisita }}</span>
+                <span>📅 FECHA: {{ partido_sel.fechaPart }}</span>
+            </div>
+
+            <form method="POST">
+                <input type="hidden" name="accion" value="guardar">
+                <input type="hidden" name="numJornada" value="{{ partido_sel.numJornada }}">
+                <input type="hidden" name="numEqLocal" value="{{ partido_sel.numEqLocal }}">
+                <input type="hidden" name="numEqVisita" value="{{ partido_sel.numEqVisita }}">
+
+                <div class="grid">
+                    <div class="equipo-col">
+                        <div class="team-header local-bg">{{ partido_sel.numEqLocal }} (Local)</div>
+                        {% for j in j_local %}
+                        <div class="input-row">
+                            <span>{{ j.nombre }}</span>
+                            <div style="display: flex; gap: 8px;">
+                                <input type="hidden" name="jugador_id[]" value="{{ j.numJug }}">
+                                <input type="number" name="goles[]" value="0" min="0" title="Goles">
+                                <select name="tarjetas[]">
+                                    <option value="0">Sin Tarjeta</option>
+                                    <option value="Y" style="background: yellow;">Amarilla</option>
+                                    <option value="R" style="background: red; color: white;">Roja</option>
+                                </select>
+                            </div>
+                        </div>
+                        {% else %}
+                        <div class="empty-msg">
+                            ⚠️ Error: No hay jugadores registrados para {{ partido_sel.numEqLocal }}.
+                        </div>
+                        {% endfor %}
+                    </div>
+
+                    <div class="equipo-col">
+                        <div class="team-header visita-bg">{{ partido_sel.numEqVisita }} (Visita)</div>
+                        {% for j in j_visita %}
+                        <div class="input-row">
+                            <span>{{ j.nombre }}</span>
+                            <div style="display: flex; gap: 8px;">
+                                <input type="hidden" name="jugador_id[]" value="{{ j.numJug }}">
+                                <input type="number" name="goles[]" value="0" min="0" title="Goles">
+                                <select name="tarjetas[]">
+                                    <option value="0">Sin Tarjeta</option>
+                                    <option value="Y" style="background: yellow;">Amarilla</option>
+                                    <option value="R" style="background: red; color: white;">Roja</option>
+                                </select>
+                            </div>
+                        </div>
+                        {% else %}
+                        <div class="empty-msg">
+                            ⚠️ Error: No hay jugadores registrados para {{ partido_sel.numEqVisita }}.
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div style="margin-top: 30px;">
+                    <label style="font-weight: bold; display: block; margin-bottom: 8px;">Observaciones del Árbitro:</label>
+                    <textarea name="observaciones" rows="3" style="width: 100%; border: 1px solid #ddd; border-radius: 8px; padding: 12px; box-sizing: border-box;" placeholder="Escriba aquí incidentes o reportes..."></textarea>
+                </div>
+
+                <button type="submit" class="btn-save">Finalizar y Guardar Marcador Oficial</button>
+            </form>
+        </div>
+        {% endif %}
+
+    </div>
+
+</body>
+</html>

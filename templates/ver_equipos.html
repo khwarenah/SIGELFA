@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Plantillas de Equipos - SIGELFA</title>
+    <style>
+        :root { --primary: #1e293b; --accent: #3b82f6; --bg: #f1f5f9; }
+        body { font-family: sans-serif; background: var(--bg); margin: 0; padding: 20px; }
+        .grid-equipos { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+        .card-equipo { background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .header-equipo { background: var(--primary); color: white; padding: 15px; }
+        .header-equipo h2 { margin: 0; font-size: 1.2rem; }
+        .badge-cat { background: var(--accent); padding: 2px 8px; border-radius: 4px; font-size: 0.8rem; }
+        .lista-jugadores { padding: 15px; }
+        .jugador-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #eee; font-size: 0.9rem; }
+        .edad { color: #666; font-style: italic; }
+        .btn-volver { display: inline-block; margin-bottom: 20px; color: var(--primary); text-decoration: none; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <a href="/" class="btn-volver">← Volver al Inicio</a>
+    <h1>Equipos y Jugadores Registrados</h1>
+
+    <div class="grid-equipos">
+        {% for nombre, info in equipos.items() %}
+        <div class="card-equipo">
+            <div class="header-equipo">
+                <h2>{{ nombre }}</h2>
+                <span class="badge-cat">Categoría: {{ info.categoria }}</span>
+            </div>
+            <div class="lista-jugadores">
+                <strong>Plantilla:</strong>
+                {% for j in info.jugadores %}
+                <div class="jugador-row">
+                    <span>#{{ j.numero }} - {{ j.nombre }}</span>
+                    <span class="edad">{{ j.edad }} años</span>
+                </div>
+                {% else %}
+                <p style="color: #991b1b;">Sin jugadores registrados.</p>
+                {% endfor %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</body>
+</html>

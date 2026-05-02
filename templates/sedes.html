@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Sedes y Canchas - SIGELFA</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; background-color: #f3f4f6; padding: 20px; }
+        .container { max-width: 900px; margin: 0 auto; }
+        .grid-forms { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin-bottom: 20px; }
+        h2 { border-bottom: 2px solid #eee; padding-bottom: 10px; color: #1f2937; }
+        label { display: block; margin-top: 10px; font-weight: bold; }
+        input, select { width: 100%; padding: 8px; margin-top: 5px; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box; }
+        .btn { border: none; padding: 10px; border-radius: 4px; cursor: pointer; font-weight: bold; width: 100%; margin-top: 15px; color: white; }
+        .btn-ud { background-color: #8b5cf6; }
+        .btn-cancha { background-color: #10b981; }
+        .btn-del { background-color: #ef4444; width: auto; padding: 5px 10px; margin-top: 0; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 14px; }
+        th, td { padding: 8px; text-align: left; border-bottom: 1px solid #eee; }
+        .alert { padding: 10px; border-radius: 4px; margin-bottom: 15px; font-weight: bold; text-align: center; }
+        .alert-success { background-color: #d1fae5; color: #065f46; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <a href="/" style="text-decoration: none; color: #3b82f6;">← Volver al Menú</a>
+    
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <div class="grid-forms">
+        <div class="card">
+            <h2>1. Unidades Deportivas</h2>
+            <form method="POST">
+                <input type="hidden" name="accion" value="crear_ud">
+                <label>Clave UD (Ej: UD01)</label>
+                <input type="text" name="cveUd" required maxlength="4">
+                <label>Nombre de la Unidad</label>
+                <input type="text" name="nombUd" required maxlength="30">
+                <button type="submit" class="btn btn-ud">Registrar Unidad</button>
+            </form>
+            
+            <table>
+                <thead><tr><th>Clave</th><th>Nombre</th><th></th></tr></thead>
+                <tbody>
+                    {% for u in unidades %}
+                    <tr>
+                        <td>{{ u.cveUd }}</td>
+                        <td>{{ u.nombUd }}</td>
+                        <td>
+                            <form method="POST" style="display:inline;">
+                                <input type="hidden" name="accion" value="eliminar_ud">
+                                <input type="hidden" name="cveUd" value="{{ u.cveUd }}">
+                                <button type="submit" class="btn btn-del">×</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="card">
+            <h2>2. Canchas por Unidad</h2>
+            <form method="POST">
+                <input type="hidden" name="accion" value="crear_cancha">
+                <label>Unidad Deportiva</label>
+                <select name="cveUd_sel" required>
+                    <option value="">-- Seleccionar --</option>
+                    {% for u in unidades %}
+                    <option value="{{ u.cveUd }}">{{ u.nombUd }}</option>
+                    {% endfor %}
+                </select>
+                <label>Número de Cancha</label>
+                <input type="number" name="numCancha" required min="1">
+                <button type="submit" class="btn btn-cancha">Agregar Cancha</button>
+            </form>
+
+            <table>
+                <thead><tr><th>Unidad</th><th># Cancha</th></tr></thead>
+                <tbody>
+                    {% for c in canchas %}
+                    <tr>
+                        <td>{{ c.nombUd }}</td>
+                        <td><strong>Cancha {{ c.numCancha }}</strong></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</body>
+</html>

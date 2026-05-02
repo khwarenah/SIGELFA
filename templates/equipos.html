@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Gestión de Equipos - SIGELFA</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f3f4f6; padding: 20px; }
+        .container { max-width: 900px; margin: 0 auto; }
+        .card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin-bottom: 20px; }
+        h2 { margin-top: 0; color: #1f2937; border-bottom: 2px solid #e5e7eb; padding-bottom: 10px; }
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; font-weight: bold; margin-bottom: 5px; color: #4b5563; }
+        input[type="text"], select { width: 100%; padding: 8px; border: 1px solid #d1d5db; border-radius: 4px; box-sizing: border-box; }
+        button { background-color: #3b82f6; color: white; padding: 10px 15px; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; width: 100%; margin-top: 10px; }
+        button:hover { background-color: #2563eb; }
+        .btn-back { display: inline-block; margin-bottom: 15px; color: #3b82f6; text-decoration: none; font-weight: bold; }
+        .alert { padding: 10px; border-radius: 4px; margin-bottom: 15px; font-weight: bold; }
+        .alert-success { background-color: #d1fae5; color: #065f46; }
+        .alert-error { background-color: #fee2e2; color: #991b1b; }
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        th, td { padding: 10px; text-align: left; border-bottom: 1px solid #e5e7eb; }
+        th { background-color: #f9fafb; color: #374151; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <a href="/" class="btn-back">← Volver al Menú Principal</a>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <div class="card">
+        <h2>1. Estructura del Torneo</h2>
+        <p style="color: #6b7280; font-size: 14px;">Registra o verifica la Liga, Torneo y Categoría antes de agregar equipos.</p>
+        <form method="POST" action="/admin/equipos">
+            <input type="hidden" name="accion" value="crear_estructura">
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>Clave de Liga (Ej: L001)</label>
+                    <input type="text" name="cveLiga" required maxlength="4">
+                </div>
+                <div class="form-group">
+                    <label>Nombre de Liga</label>
+                    <input type="text" name="nombLiga" required maxlength="30">
+                </div>
+                <div class="form-group">
+                    <label>Periodo Torneo (Ej: 2024A)</label>
+                    <input type="text" name="perTorneo" required maxlength="5">
+                </div>
+                <div class="form-group">
+                    <label>Nombre Torneo (Ej: Apertura)</label>
+                    <input type="text" name="nombTorneo" required maxlength="30">
+                </div>
+                <div class="form-group">
+                    <label>Clave Categoría (Ej: LIB)</label>
+                    <input type="text" name="nomCortoCat" required maxlength="4">
+                </div>
+            </div>
+            <button type="submit">Guardar Estructura</button>
+        </form>
+    </div>
+
+    <div class="card">
+        <h2>2. Registrar Nuevo Equipo</h2>
+        <form method="POST" action="/admin/equipos">
+            <input type="hidden" name="accion" value="crear_equipo">
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>Asignar a Categoría</label>
+                    <select name="categoria_sel" required>
+                        <option value="">-- Selecciona una categoría --</option>
+                        {% for cat in categorias %}
+                            <option value="{{ cat.nomCortoCat }}|{{ cat.perTorneo }}|{{ cat.cveLiga }}">
+                                {{ cat.nomCortoCat }} (Torneo: {{ cat.perTorneo }})
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Clave Equipo (Ej: VIK)</label>
+                    <input type="text" name="cveEquipo" required maxlength="10">
+                </div>
+                <div class="form-group" style="grid-column: span 2;">
+                    <label>Nombre del Equipo</label>
+                    <input type="text" name="nombEquipo" required maxlength="30">
+                </div>
+            </div>
+            <button type="submit" style="background-color: #10b981;">Registrar Equipo</button>
+        </form>
+
+        <h3 style="margin-top: 30px; border-top: 1px solid #e5e7eb; padding-top: 20px;">Equipos en la Base de Datos</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Clave</th>
+                    <th>Nombre del Equipo</th>
+                    <th>Categoría</th>
+                    <th>Torneo</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for eq in equipos %}
+                <tr>
+                    <td><strong>{{ eq.cveEquipo }}</strong></td>
+                    <td>{{ eq.nombEquipo }}</td>
+                    <td>{{ eq.nomCortoCat }}</td>
+                    <td>{{ eq.perTorneo }}</td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="4" style="text-align: center; color: #6b7280;">Aún no hay equipos registrados.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+</body>
+</html>

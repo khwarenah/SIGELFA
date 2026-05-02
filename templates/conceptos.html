@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Conceptos - SIGELFA</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; background-color: #f3f4f6; padding: 20px; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin-bottom: 20px; }
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; }
+        input, select, button { width: 100%; padding: 8px; border-radius: 4px; box-sizing: border-box; }
+        input, select { border: 1px solid #d1d5db; }
+        .btn-add { background-color: #10b981; color: white; font-weight: bold; margin-top: 15px; border: none; cursor: pointer; }
+        .btn-del { background-color: #ef4444; color: white; padding: 5px 10px; border: none; cursor: pointer; }
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        th, td { padding: 10px; text-align: left; border-bottom: 1px solid #e5e7eb; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <a href="/" style="text-decoration: none; color: #3b82f6;">← Volver</a>
+    <div class="card">
+        <h2>Nuevo Concepto (Catálogo)</h2>
+        <form method="POST">
+            <input type="hidden" name="accion" value="crear">
+            <div class="form-grid">
+                <div><label>Clave (Ej: INS)</label><input type="text" name="cveConc" required maxlength="3"></div>
+                <div><label>Descripción</label><input type="text" name="descConc" required maxlength="30"></div>
+                <div>
+                    <label>Liga Asociada</label>
+                    <select name="cveLiga" required>
+                        <option value="">-- Seleccionar --</option>
+                        {% for liga in ligas %}
+                        <option value="{{ liga.cveLiga }}">{{ liga.nombLiga }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <button type="submit" class="btn-add">Guardar Concepto</button>
+        </form>
+    </div>
+
+    <div class="card">
+        <h2>Catálogo de Conceptos</h2>
+        <table>
+            <tr><th>Clave</th><th>Descripción</th><th>Liga</th><th>Acción</th></tr>
+            {% for c in conceptos %}
+            <tr>
+                <td><strong>{{ c.cveConc }}</strong></td>
+                <td>{{ c.descConc }}</td>
+                <td>{{ c.cveLiga }}</td>
+                <td>
+                    <form method="POST" style="display:inline;">
+                        <input type="hidden" name="accion" value="eliminar">
+                        <input type="hidden" name="cveConc" value="{{ c.cveConc }}">
+                        <button type="submit" class="btn-del">Borrar</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</div>
+</body>
+</html>
