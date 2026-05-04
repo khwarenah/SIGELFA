@@ -3,28 +3,142 @@
 <head>
     <meta charset="UTF-8">
     <title>Jornadas y Resultados - SIGELFA</title>
-    <style>
-        :root { --primary: #1e293b; --bg: #f1f5f9; --white: #ffffff; }
-        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); margin: 0; }
-        .navbar { background: var(--primary); color: white; padding: 1rem; text-align: center; }
-        .container { max-width: 800px; margin: 20px auto; padding: 0 15px; }
-        .jornada-titulo { background: #e2e8f0; padding: 10px; border-radius: 8px; margin: 20px 0 10px; font-weight: bold; color: #475569; }
-        .partido-card { 
-            background: var(--white); border-radius: 10px; padding: 20px; 
-            display: flex; align-items: center; justify-content: space-between;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05); margin-bottom: 10px;
-        }
-        .equipo { flex: 1; font-weight: bold; font-size: 1.1rem; }
-        .local { text-align: right; padding-right: 15px; }
-        .visita { text-align: left; padding-left: 15px; }
-        .marcador { 
-            background: #1e293b; color: white; padding: 8px 20px; 
-            border-radius: 5px; font-size: 1.2rem; font-weight: bold;
-            min-width: 50px; text-align: center;
-        }
-        .vs { color: #94a3b8; font-style: italic; }
-        .fecha { font-size: 0.8rem; color: #64748b; margin-top: 5px; }
-    </style>
+<style>
+    :root {
+        --primary: #0f172a;
+        --accent: #3b82f6;
+        --bg: #f8fafc;
+        --white: #ffffff;
+        --text: #1e293b;
+        --border: #e2e8f0;
+    }
+
+    body { 
+        font-family: 'Inter', 'Segoe UI', sans-serif; 
+        background: var(--bg); 
+        color: var(--text);
+        margin: 0; 
+        line-height: 1.5;
+    }
+
+    /* --- NAVBAR MODERNA --- */
+    .navbar { 
+        background: var(--primary); 
+        color: white; 
+        padding: 1rem 2rem; 
+        display: flex;
+        justify-content: center; /* Centra el contenido */
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Estilo del botón "Volver" en la Navbar */
+    .navbar a { 
+        color: #cbd5e1;
+        text-decoration: none; 
+        font-weight: 600; 
+        font-size: 14px;
+        padding: 8px 16px;
+        border-radius: 8px;
+        border: 1px solid rgba(255,255,255,0.1);
+        transition: all 0.2s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .navbar a:hover { 
+        color: white;
+        background: rgba(255,255,255,0.1);
+        transform: translateX(-3px);
+    }
+
+    .container { 
+        max-width: 900px; 
+        margin: 40px auto; 
+        padding: 0 20px; 
+    }
+
+    h1 {
+        text-align: center;
+        color: var(--primary);
+        font-weight: 800;
+        letter-spacing: -0.025em;
+        margin-bottom: 30px;
+    }
+
+    .jornada-titulo { 
+        background: #f1f5f9; 
+        padding: 12px 20px; 
+        border-radius: 12px; 
+        margin: 30px 0 15px; 
+        font-weight: 800; 
+        color: #475569; 
+        font-size: 0.9rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        border-left: 5px solid var(--accent);
+    }
+
+    /* --- TARJETA DE PARTIDO ESTILO APP --- */
+    .partido-card { 
+        background: var(--white); 
+        border-radius: 16px; 
+        padding: 25px; 
+        display: flex; 
+        align-items: center; 
+        justify-content: space-between;
+        box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -1px rgba(0,0,0,0.06); 
+        margin-bottom: 15px;
+        border: 1px solid var(--border);
+        transition: transform 0.2s;
+    }
+
+    .partido-card:hover {
+        transform: scale(1.01);
+    }
+
+    .equipo { 
+        flex: 1; 
+        font-weight: 700; 
+        font-size: 1.1rem; 
+        color: var(--primary);
+    }
+
+    .local { text-align: right; padding-right: 20px; }
+    .visita { text-align: left; padding-left: 20px; }
+
+    /* --- MARCADOR DESTACADO --- */
+    .marcador-container {
+        text-align: center;
+        min-width: 120px;
+    }
+
+    .marcador { 
+        background: var(--primary); 
+        color: white; 
+        padding: 10px 24px; 
+        border-radius: 10px; 
+        font-size: 1.4rem; 
+        font-weight: 800;
+        display: inline-block;
+        box-shadow: 0 4px 12px rgba(15, 23, 42, 0.2);
+    }
+
+    .vs { 
+        color: #94a3b8; 
+        font-style: italic; 
+        font-size: 1rem;
+        font-weight: 500;
+    }
+
+    .fecha { 
+        font-size: 0.75rem; 
+        color: #64748b; 
+        margin-top: 10px; 
+        font-weight: 600;
+        text-transform: uppercase;
+    }
+</style>
 </head>
 <body>
     <div class="navbar">

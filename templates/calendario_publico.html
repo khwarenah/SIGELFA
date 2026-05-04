@@ -4,91 +4,164 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calendario y Resultados Oficiales - SIGELFA</title>
-    <style>
-        :root {
-            --primary: #1e293b;
-            --accent: #3b82f6;
-            --bg: #f1f5f9;
-            --success: #10b981;
-        }
-        body { font-family: 'Segoe UI', Tahoma, sans-serif; background: var(--bg); margin: 0; color: #334155; }
-        
-        .navbar { background: var(--primary); color: white; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; }
-        .navbar a { color: white; text-decoration: none; font-weight: bold; border: 1px solid white; padding: 5px 15px; border-radius: 5px; }
+<style>
+    :root {
+        --primary: #0f172a;    /* Azul profundo profesional */
+        --accent: #3b82f6;     /* Azul de acción */
+        --success: #059669;    /* Verde para finalizados */
+        --warning: #f59e0b;    /* Naranja para programados */
+        --bg: #f8fafc;         /* Fondo limpio */
+        --white: #ffffff;
+        --text: #1e293b;
+        --border: #e2e8f0;
+    }
 
-        .container { max-width: 900px; margin: 2rem auto; padding: 0 1rem; }
-        h1 { text-align: center; color: var(--primary); margin-bottom: 2rem; }
+    body { 
+        font-family: 'Inter', 'Segoe UI', sans-serif; 
+        background: var(--bg); 
+        color: var(--text); 
+        margin: 0; 
+        line-height: 1.5;
+    }
 
-        .partido-card {
-            background: white;
-            border-radius: 12px;
-            padding: 20px;
-            margin-bottom: 15px;
-            display: grid;
-            grid-template-columns: 1fr 150px 1fr;
-            align-items: center;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-            border-left: 6px solid var(--primary);
-        }
+    /* --- NAVBAR MODERNA --- */
+    .navbar { 
+        background: var(--primary); 
+        color: white; 
+        padding: 1rem 2rem; 
+        display: flex; 
+        justify-content: space-between; 
+        align-items: center; 
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    }
 
-        .equipo { font-size: 1.2rem; font-weight: bold; color: var(--primary); }
-        .local { text-align: right; }
-        .visita { text-align: left; }
+    /* Estilo para el link "Volver" en la Navbar */
+    .navbar a { 
+        color: #cbd5e1;
+        text-decoration: none; 
+        font-weight: 600; 
+        font-size: 14px;
+        padding: 8px 16px;
+        border-radius: 8px;
+        border: 1px solid rgba(255,255,255,0.1);
+        transition: all 0.2s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+    }
 
-        .marcador-box {
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 5px;
-        }
+    .navbar a:hover { 
+        color: white;
+        background: rgba(255,255,255,0.1);
+        transform: translateX(-3px); /* Efecto de retroceso */
+    }
 
-        .puntos {
-            background: var(--primary);
-            color: white;
-            padding: 8px 20px;
-            border-radius: 8px;
-            font-size: 1.5rem;
-            font-weight: 800;
-            min-width: 70px;
-        }
+    .container { max-width: 900px; margin: 40px auto; padding: 0 20px; }
+    
+    h1 { 
+        text-align: center; 
+        color: var(--primary); 
+        font-weight: 800;
+        letter-spacing: -0.025em;
+        margin-bottom: 40px; 
+    }
 
-        .vs-badge {
-            color: #94a3b8;
-            font-weight: bold;
-            font-style: italic;
-        }
+    /* --- TARJETA DE PARTIDO (LAYOUT GRID) --- */
+    .partido-card {
+        background: var(--white);
+        border-radius: 16px;
+        padding: 25px;
+        margin-bottom: 20px;
+        display: grid;
+        grid-template-columns: 1fr auto 1fr;
+        align-items: center;
+        box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+        border: 1px solid var(--border);
+        border-left: 6px solid var(--primary);
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
 
-        .meta-info {
-            font-size: 0.8rem;
-            color: #64748b;
-            margin-top: 5px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
+    .partido-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+    }
 
-        .sede-tag {
-            grid-column: 1 / span 3;
-            margin-top: 15px;
-            padding-top: 10px;
-            border-top: 1px solid #f1f5f9;
-            font-size: 0.85rem;
-            color: #64748b;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
+    .equipo { font-size: 1.1rem; font-weight: 700; color: var(--primary); }
+    .local { text-align: right; padding-right: 20px; }
+    .visita { text-align: left; padding-left: 20px; }
 
-        .badge-final {
-            font-size: 0.7rem;
-            background: #d1fae5;
-            color: #065f46;
-            padding: 2px 8px;
-            border-radius: 10px;
-            font-weight: bold;
-            margin-top: 5px;
-        }
-    </style>
+    /* --- CAJA CENTRAL (MARCADOR/VS) --- */
+    .marcador-box {
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+        min-width: 160px;
+    }
+
+    .puntos {
+        background: var(--primary);
+        color: white;
+        padding: 10px 24px;
+        border-radius: 10px;
+        font-size: 1.4rem;
+        font-weight: 800;
+        min-width: 80px;
+        box-shadow: 0 4px 10px rgba(15, 23, 42, 0.2);
+    }
+
+    .vs-badge {
+        color: #94a3b8;
+        font-weight: 700;
+        font-style: italic;
+        font-size: 1.1rem;
+    }
+
+    .meta-info {
+        font-size: 0.75rem;
+        color: #64748b;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+
+    /* --- ETIQUETA DE SEDE Y HORA --- */
+    .sede-tag {
+        grid-column: 1 / span 3;
+        margin-top: 15px;
+        padding-top: 15px;
+        border-top: 1px solid #f1f5f9;
+        font-size: 0.85rem;
+        color: #475569;
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+    }
+
+    .sede-tag strong { color: var(--primary); }
+
+    /* --- BADGES DE ESTADO --- */
+    .badge-final {
+        font-size: 0.7rem;
+        background: #d1fae5;
+        color: #065f46;
+        padding: 4px 10px;
+        border-radius: 20px;
+        font-weight: 800;
+        border: 1px solid #a7f3d0;
+    }
+
+    .badge-prog {
+        font-size: 0.7rem;
+        background: #fef3c7;
+        color: #92400e;
+        padding: 4px 10px;
+        border-radius: 20px;
+        font-weight: 800;
+        border: 1px solid #fde68a;
+    }
+</style>
 </head>
 <body>
 

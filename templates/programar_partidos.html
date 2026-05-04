@@ -3,18 +3,159 @@
 <head>
     <meta charset="UTF-8">
     <title>Programar Partidos - SIGELFA</title>
-    <style>
-        body { font-family: 'Segoe UI', sans-serif; background-color: #f3f4f6; padding: 20px; }
-        .card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin-bottom: 20px; }
-        .juego-row { display: grid; grid-template-columns: 2fr 1fr 1fr 1.5fr 1.5fr 1fr; gap: 10px; align-items: end; border-bottom: 1px solid #eee; padding: 10px 0; }
-        label { font-size: 12px; font-weight: bold; color: #666; }
-        input, select { width: 100%; padding: 5px; border-radius: 4px; border: 1px solid #ccc; }
-        .btn-save { background: #10b981; color: white; border: none; padding: 8px; border-radius: 4px; cursor: pointer; }
-        .vs-badge { font-weight: bold; color: #ef4444; }
-    </style>
+<style>
+    :root {
+        --primary: #0f172a;
+        --accent: #3b82f6;
+        --success: #10b981;
+        --danger: #ef4444;
+        --bg: #f8fafc;
+        --text: #1e293b;
+        --border: #e2e8f0;
+    }
+
+    body { 
+        font-family: 'Inter', 'Segoe UI', sans-serif; 
+        background-color: var(--bg); 
+        color: var(--text);
+        padding: 40px 20px;
+        margin: 0;
+        line-height: 1.5;
+    }
+
+    .container { max-width: 1100px; margin: 0 auto; }
+
+    /* --- BOTÓN VOLVER (ESTILO UNIFICADO) --- */
+    .btn-back { 
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 24px; 
+        color: #64748b;
+        text-decoration: none; 
+        font-weight: 600; 
+        font-size: 14px;
+        padding: 10px 18px;
+        border-radius: 8px;
+        background-color: white;
+        border: 1px solid var(--border);
+        transition: all 0.2s ease;
+        box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+    }
+
+    .btn-back:hover { 
+        color: var(--primary); 
+        background-color: #f1f5f9;
+        border-color: #cbd5e1;
+        transform: translateX(-5px);
+    }
+
+    /* Tarjetas Modernas */
+    .card { 
+        background: white; 
+        padding: 30px; 
+        border-radius: 16px; 
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        margin-bottom: 24px; 
+        border: 1px solid var(--border);
+    }
+
+    h2 { 
+        margin-top: 0; 
+        color: var(--primary); 
+        font-weight: 800;
+        font-size: 1.5rem;
+        border-bottom: 1px solid var(--border); 
+        padding-bottom: 15px;
+        margin-bottom: 25px;
+    }
+
+    /* --- FILA DE JUEGO (GRID OPTIMIZADO) --- */
+    .juego-row { 
+        display: grid; 
+        grid-template-columns: 2fr 0.5fr 2fr 1.5fr 1.5fr 1fr; 
+        gap: 15px; 
+        align-items: end; 
+        border-bottom: 1px solid var(--border); 
+        padding: 20px 0;
+        transition: background-color 0.2s;
+    }
+
+    .juego-row:hover {
+        background-color: #f8fafc;
+    }
+
+    .juego-row:last-child { border-bottom: none; }
+
+    label { 
+        font-size: 11px; 
+        font-weight: 700; 
+        color: #64748b; 
+        text-transform: uppercase;
+        letter-spacing: 0.025em;
+        margin-bottom: 6px;
+        display: block;
+    }
+
+    input, select { 
+        width: 100%; 
+        padding: 10px; 
+        border-radius: 8px; 
+        border: 1px solid var(--border); 
+        font-size: 14px;
+        color: var(--text);
+        background-color: white;
+        transition: border-color 0.2s;
+    }
+
+    input:focus, select:focus {
+        outline: none;
+        border-color: var(--accent);
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    }
+
+    /* Botón de Guardar por Fila */
+    .btn-save { 
+        background-color: var(--success); 
+        color: white; 
+        border: none; 
+        padding: 10px; 
+        border-radius: 8px; 
+        cursor: pointer; 
+        font-weight: 700;
+        font-size: 13px;
+        transition: all 0.2s;
+        box-shadow: 0 2px 4px rgba(16, 185, 129, 0.2);
+    }
+
+    .btn-save:hover { 
+        background-color: #059669; 
+        transform: translateY(-1px);
+        box-shadow: 0 4px 8px rgba(16, 185, 129, 0.3);
+    }
+
+    /* Badge del VS */
+    .vs-badge { 
+        font-weight: 800; 
+        color: var(--danger); 
+        text-align: center;
+        background: #fef2f2;
+        padding: 6px;
+        border-radius: 6px;
+        font-size: 12px;
+        display: block;
+        margin-bottom: 6px; /* Para alinear con los inputs */
+    }
+
+    .equipo-nombre {
+        font-weight: 600;
+        color: var(--primary);
+        font-size: 14px;
+    }
+</style>
 </head>
 <body>
-    <a href="/">← Volver</a>
+    <a href="/" class="btn-back">← Volver</a>
     <h2>Logística de Partidos</h2>
 
     <div class="card">

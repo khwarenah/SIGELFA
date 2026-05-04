@@ -4,69 +4,227 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cédula Arbitral - SIGELFA</title>
-    <style>
-        :root {
-            --primary: #1e293b;
-            --accent: #3b82f6;
-            --danger: #ef4444;
-            --success: #10b981;
-            --bg: #f8fafc;
-        }
-        body { font-family: 'Segoe UI', Tahoma, sans-serif; background: var(--bg); margin: 0; color: #334155; }
-        
-        /* Navbar */
-        .navbar { 
-            background: var(--primary); color: white; padding: 1rem 2rem; 
-            display: flex; justify-content: space-between; align-items: center; 
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1); 
-        }
-        .navbar a { color: white; text-decoration: none; font-weight: 600; padding: 8px 16px; border-radius: 6px; }
-        .btn-new { background: var(--accent); }
+<style>
+    :root {
+        --primary: #0f172a;
+        --accent: #3b82f6;
+        --danger: #ef4444;
+        --success: #059669;
+        --warning: #f59e0b;
+        --bg: #f8fafc;
+        --text: #1e293b;
+        --border: #e2e8f0;
+    }
 
-        .container { max-width: 1100px; margin: 2rem auto; padding: 0 1rem; }
-        
-        /* Cards */
-        .card { background: white; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); padding: 20px; margin-bottom: 2rem; }
-        h2 { margin-top: 0; color: var(--primary); border-bottom: 2px solid #f1f5f9; padding-bottom: 10px; }
+    body { 
+        font-family: 'Inter', 'Segoe UI', sans-serif; 
+        background-color: var(--bg); 
+        color: var(--text);
+        margin: 0;
+        padding-bottom: 40px;
+        line-height: 1.5;
+    }
 
-        /* Tabla de Partidos */
-        table { width: 100%; border-collapse: collapse; }
-        th { text-align: left; background: #f1f5f9; padding: 12px; font-size: 0.8rem; text-transform: uppercase; }
-        td { padding: 12px; border-bottom: 1px solid #f1f5f9; }
-        
-        .status { padding: 4px 8px; border-radius: 20px; font-size: 0.75rem; font-weight: bold; }
-        .status-ok { background: #d1fae5; color: #065f46; }
-        .status-pend { background: #fef3c7; color: #92400e; }
+    /* --- NAVBAR MODERNA --- */
+    .navbar { 
+        background: var(--primary); 
+        color: white; 
+        padding: 1rem 2rem; 
+        display: flex; 
+        justify-content: space-between; 
+        align-items: center; 
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); 
+    }
 
-        /* Grid de Cédula */
-        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 20px; }
-        .team-header { padding: 12px; border-radius: 8px; color: white; text-align: center; font-weight: bold; margin-bottom: 10px; }
-        .local-bg { background: var(--accent); }
-        .visita-bg { background: var(--danger); }
+    /* Estilo del botón "Inicio" dentro de la Navbar */
+    .navbar a[href="/"] { 
+        color: #cbd5e1;
+        text-decoration: none; 
+        font-weight: 600; 
+        font-size: 14px;
+        padding: 8px 12px;
+        border-radius: 8px;
+        transition: all 0.2s;
+    }
 
-        .input-row { 
-            display: flex; align-items: center; justify-content: space-between; 
-            padding: 10px; border-bottom: 1px solid #f1f5f9; 
-        }
-        .empty-msg { 
-            background: #fff1f2; color: #991b1b; padding: 15px; 
-            border-radius: 8px; text-align: center; font-weight: bold; border: 1px solid #fecaca;
-        }
+    .navbar a[href="/"]:hover { 
+        color: white;
+        background: rgba(255,255,255,0.1);
+        transform: translateX(-3px);
+    }
 
-        input[type="number"] { width: 50px; padding: 5px; border: 1px solid #ddd; border-radius: 4px; text-align: center; }
-        select { padding: 5px; border-radius: 4px; border: 1px solid #ddd; }
+/* --- MEJORA DEL BOTÓN NUEVA CÉDULA --- */
+.btn-new { 
+    background: linear-gradient(135deg, var(--accent) 0%, #2563eb 100%); /* Degradado sutil */
+    color: white !important;
+    text-decoration: none !important; /* ¡Adiós al subrayado feo! */
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.3); /* Sombra azul suave */
+}
 
-        /* Footer */
-        .btn-save { 
-            background: var(--success); color: white; border: none; padding: 15px; 
-            width: 100%; border-radius: 8px; font-size: 1.1rem; cursor: pointer; 
-            font-weight: bold; margin-top: 20px;
-        }
-        .btn-del { 
-            background: none; border: 1px solid var(--danger); color: var(--danger); 
-            padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 0.8rem;
-        }
-    </style>
+.btn-new:hover { 
+    transform: translateY(-2px); /* Efecto de elevación */
+    box-shadow: 0 10px 15px -3px rgba(59, 130, 246, 0.4);
+    filter: brightness(1.1); /* Brilla un poco al pasar el mouse */
+}
+
+.btn-new:active {
+    transform: translateY(0);
+}
+
+    .container { max-width: 1100px; margin: 2rem auto; padding: 0 1rem; }
+    
+    /* --- CARDS --- */
+    .card { 
+        background: white; 
+        border-radius: 16px; 
+        box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); 
+        padding: 30px; 
+        margin-bottom: 2rem; 
+        border: 1px solid var(--border);
+    }
+
+    h2 { 
+        margin-top: 0; 
+        color: var(--primary); 
+        font-weight: 800;
+        font-size: 1.4rem;
+        border-bottom: 1px solid var(--border); 
+        padding-bottom: 15px;
+        margin-bottom: 20px;
+    }
+
+    /* --- TABLA DE PARTIDOS --- */
+    table { width: 100%; border-collapse: collapse; }
+    th { 
+        text-align: left; 
+        background: #f1f5f9; 
+        padding: 14px; 
+        font-size: 11px; 
+        text-transform: uppercase; 
+        color: #64748b;
+        letter-spacing: 0.05em;
+        font-weight: 700;
+    }
+    td { padding: 16px 14px; border-bottom: 1px solid var(--border); font-size: 14px; }
+    
+    .status { padding: 5px 12px; border-radius: 9999px; font-size: 11px; font-weight: 700; text-transform: uppercase; }
+    .status-ok { background: #d1fae5; color: #065f46; border: 1px solid #a7f3d0; }
+    .status-pend { background: #fef3c7; color: #92400e; border: 1px solid #fde68a; }
+
+    /* --- GRID DE CÉDULA (EQUIPOS) --- */
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2.5rem; margin-top: 20px; }
+    
+    .team-header { 
+        padding: 15px; 
+        border-radius: 12px; 
+        color: white; 
+        text-align: center; 
+        font-weight: 800; 
+        margin-bottom: 15px; 
+        font-size: 1.1rem;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    .local-bg { background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%); }
+    .visita-bg { background: linear-gradient(135deg, #ef4444 0%, #b91c1c 100%); }
+
+    .input-row { 
+        display: flex; 
+        align-items: center; 
+        justify-content: space-between; 
+        padding: 12px; 
+        border-bottom: 1px solid #f1f5f9;
+        transition: background 0.2s;
+    }
+    .input-row:hover { background: #f8fafc; }
+
+    .empty-msg { 
+        background: #fff1f2; 
+        color: #991b1b; 
+        padding: 20px; 
+        border-radius: 12px; 
+        text-align: center; 
+        font-weight: 700; 
+        border: 1px solid #fecaca;
+        font-size: 14px;
+    }
+
+    /* Inputs de Goles y Tarjetas */
+    input[type="number"] { 
+        width: 60px; 
+        padding: 8px; 
+        border: 1px solid var(--border); 
+        border-radius: 6px; 
+        text-align: center; 
+        font-weight: 700;
+        outline: none;
+    }
+    input[type="number"]:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1); }
+
+    select { 
+        padding: 8px; 
+        border-radius: 6px; 
+        border: 1px solid var(--border); 
+        background: white;
+        font-size: 13px;
+        font-weight: 600;
+        outline: none;
+    }
+
+    /* --- FOOTER Y BOTONES --- */
+    .btn-save { 
+        background: var(--success); 
+        color: white; 
+        border: none; 
+        padding: 18px; 
+        width: 100%; 
+        border-radius: 12px; 
+        font-size: 1.1rem; 
+        cursor: pointer; 
+        font-weight: 800; 
+        margin-top: 30px;
+        transition: all 0.3s;
+        box-shadow: 0 4px 12px rgba(5, 150, 105, 0.3);
+    }
+    .btn-save:hover { 
+        background: #047857; 
+        transform: translateY(-2px);
+        box-shadow: 0 8px 15px rgba(5, 150, 105, 0.4);
+    }
+
+    .btn-del { 
+        background: #fff1f2; 
+        border: 1px solid #fecaca; 
+        color: var(--danger); 
+        padding: 6px 12px; 
+        border-radius: 6px; 
+        cursor: pointer; 
+        font-size: 0.75rem;
+        font-weight: 700;
+        transition: all 0.2s;
+    }
+    .btn-del:hover { background: var(--danger); color: white; }
+
+    /* Observaciones */
+    textarea {
+        width: 100%;
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 15px;
+        font-family: inherit;
+        font-size: 14px;
+        resize: vertical;
+        outline: none;
+    }
+    textarea:focus { border-color: var(--accent); }
+</style>
 </head>
 <body>
 

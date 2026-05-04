@@ -3,27 +3,181 @@
 <head>
     <meta charset="UTF-8">
     <title>Sedes y Canchas - SIGELFA</title>
-    <style>
-        body { font-family: 'Segoe UI', sans-serif; background-color: #f3f4f6; padding: 20px; }
-        .container { max-width: 900px; margin: 0 auto; }
-        .grid-forms { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-        .card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin-bottom: 20px; }
-        h2 { border-bottom: 2px solid #eee; padding-bottom: 10px; color: #1f2937; }
-        label { display: block; margin-top: 10px; font-weight: bold; }
-        input, select { width: 100%; padding: 8px; margin-top: 5px; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box; }
-        .btn { border: none; padding: 10px; border-radius: 4px; cursor: pointer; font-weight: bold; width: 100%; margin-top: 15px; color: white; }
-        .btn-ud { background-color: #8b5cf6; }
-        .btn-cancha { background-color: #10b981; }
-        .btn-del { background-color: #ef4444; width: auto; padding: 5px 10px; margin-top: 0; }
-        table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 14px; }
-        th, td { padding: 8px; text-align: left; border-bottom: 1px solid #eee; }
-        .alert { padding: 10px; border-radius: 4px; margin-bottom: 15px; font-weight: bold; text-align: center; }
-        .alert-success { background-color: #d1fae5; color: #065f46; }
-    </style>
+<style>
+    :root {
+        --primary: #0f172a;
+        --accent-ud: #8b5cf6;    /* Morado para Unidades Deportivas */
+        --accent-cancha: #10b981; /* Verde para Canchas */
+        --danger: #ef4444;
+        --bg: #f8fafc;
+        --text: #1e293b;
+        --border: #e2e8f0;
+    }
+
+    body { 
+        font-family: 'Inter', 'Segoe UI', sans-serif; 
+        background-color: var(--bg); 
+        color: var(--text);
+        padding: 40px 20px;
+        margin: 0;
+        line-height: 1.5;
+    }
+
+    .container { max-width: 1000px; margin: 0 auto; }
+
+    /* --- BOTÓN VOLVER --- */
+    .btn-back { 
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 24px; 
+        color: #64748b;
+        text-decoration: none; 
+        font-weight: 600; 
+        font-size: 14px;
+        padding: 10px 18px;
+        border-radius: 8px;
+        background-color: white;
+        border: 1px solid var(--border);
+        transition: all 0.2s ease;
+        box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+    }
+
+    .btn-back:hover { 
+        color: var(--primary); 
+        background-color: #f1f5f9;
+        border-color: #cbd5e1;
+        transform: translateX(-5px);
+    }
+
+    /* Grid para los dos formularios */
+    .grid-forms { 
+        display: grid; 
+        grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); 
+        gap: 24px; 
+    }
+
+    /* Tarjetas Modernas */
+    .card { 
+        background: white; 
+        padding: 30px; 
+        border-radius: 16px; 
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        margin-bottom: 24px; 
+        border: 1px solid var(--border);
+    }
+
+    h2 { 
+        margin-top: 0; 
+        color: var(--primary); 
+        font-weight: 800;
+        font-size: 1.3rem;
+        border-bottom: 1px solid var(--border); 
+        padding-bottom: 12px;
+        margin-bottom: 20px;
+    }
+
+    label { 
+        display: block; 
+        margin-top: 15px; 
+        font-weight: 700; 
+        color: #475569; 
+        font-size: 12px;
+        text-transform: uppercase;
+    }
+
+    input, select { 
+        width: 100%; 
+        padding: 12px; 
+        margin-top: 6px; 
+        border: 1px solid var(--border); 
+        border-radius: 8px; 
+        box-sizing: border-box;
+        font-size: 14px;
+        background-color: white;
+        transition: all 0.2s;
+    }
+
+    input:focus, select:focus {
+        outline: none;
+        border-color: #94a3b8;
+        box-shadow: 0 0 0 3px rgba(226, 232, 240, 0.5);
+    }
+
+    /* Estilo General de Botones */
+    .btn { 
+        border: none; 
+        padding: 14px; 
+        border-radius: 8px; 
+        cursor: pointer; 
+        font-weight: 700; 
+        width: 100%; 
+        margin-top: 20px; 
+        color: white; 
+        font-size: 14px;
+        transition: all 0.2s;
+    }
+
+    .btn:hover { transform: translateY(-1px); }
+
+    .btn-ud { 
+        background-color: var(--accent-ud); 
+        box-shadow: 0 4px 12px rgba(139, 92, 246, 0.2);
+    }
+    .btn-ud:hover { background-color: #7c3aed; }
+
+    .btn-cancha { 
+        background-color: var(--accent-cancha); 
+        box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
+    }
+    .btn-cancha:hover { background-color: #059669; }
+
+    /* Botón Borrar (más discreto) */
+    .btn-del { 
+        background-color: #fff1f2; 
+        color: var(--danger); 
+        width: auto; 
+        padding: 6px 12px; 
+        margin-top: 0; 
+        border: 1px solid #fecaca;
+        font-size: 12px;
+    }
+    .btn-del:hover { background-color: var(--danger); color: white; }
+
+    /* Tablas */
+    table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+    
+    th { 
+        padding: 12px 8px; 
+        text-align: left; 
+        background-color: #f8fafc; 
+        color: #64748b; 
+        font-size: 11px;
+        text-transform: uppercase;
+        border-bottom: 2px solid var(--border);
+    }
+
+    td { 
+        padding: 12px 8px; 
+        border-bottom: 1px solid var(--border); 
+        font-size: 13px;
+    }
+
+    /* Alertas */
+    .alert { 
+        padding: 12px; 
+        border-radius: 8px; 
+        margin-bottom: 20px; 
+        font-weight: 600; 
+        text-align: center; 
+        font-size: 14px;
+    }
+    .alert-success { background-color: #d1fae5; color: #065f46; border: 1px solid #a7f3d0; }
+</style>
 </head>
 <body>
 <div class="container">
-    <a href="/" style="text-decoration: none; color: #3b82f6;">← Volver al Menú</a>
+    <a href="/" class="btn-back">← Volver al Menú</a>
     
     {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}

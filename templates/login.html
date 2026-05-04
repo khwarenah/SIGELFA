@@ -4,41 +4,164 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - SIGELFA</title>
-    <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f3f4f6;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-        }
-        .login-container {
-            background-color: white;
-            padding: 40px;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            width: 100%;
-            max-width: 400px;
-            text-align: center;
-        }
-        h2 { color: #1f2937; margin-bottom: 30px; }
-        .form-group { margin-bottom: 20px; text-align: left; }
-        label { display: block; margin-bottom: 8px; color: #4b5563; font-weight: bold; }
-        input[type="text"], input[type="password"] {
-            width: 100%; padding: 10px; border: 1px solid #d1d5db;
-            border-radius: 5px; box-sizing: border-box; font-size: 16px;
-        }
-        button {
-            width: 100%; padding: 12px; background-color: #3b82f6;
-            color: white; border: none; border-radius: 5px;
-            font-size: 16px; font-weight: bold; cursor: pointer;
-            transition: background-color 0.3s;
-        }
-        button:hover { background-color: #2563eb; }
-        .error { color: #dc2626; background-color: #fee2e2; padding: 10px; border-radius: 5px; margin-bottom: 20px; }
-    </style>
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap');
+
+    :root {
+        --primary: #0f172a;
+        --accent: #3b82f6;
+        --bg: #f1f5f9;
+        --danger: #f43f5e;
+        --white: rgba(255, 255, 255, 0.95);
+    }
+
+    body {
+        font-family: 'Plus Jakarta Sans', sans-serif;
+        background-color: var(--bg);
+        /* Fondo con malla deportiva y gradientes suaves */
+        background-image: 
+            radial-gradient(at 0% 0%, rgba(59, 130, 246, 0.08) 0px, transparent 50%),
+            radial-gradient(at 100% 100%, rgba(16, 185, 129, 0.08) 0px, transparent 50%);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        overflow: hidden;
+    }
+
+    .login-container {
+        background: var(--white);
+        backdrop-filter: blur(12px);
+        padding: 50px 40px;
+        border-radius: 28px;
+        border: 1px solid rgba(255, 255, 255, 0.8);
+        box-shadow: 
+            0 10px 25px -5px rgba(0, 0, 0, 0.05),
+            0 25px 50px -12px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 420px;
+        text-align: center;
+        transition: transform 0.3s ease;
+    }
+
+    /* Efecto sutil de flotación en el contenedor */
+    .login-container:hover {
+        transform: translateY(-5px);
+    }
+
+    h2 { 
+        margin: 0 0 10px 0;
+        background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        font-size: 2.2rem;
+        font-weight: 800;
+        letter-spacing: -0.05em;
+    }
+
+    .subtitle {
+        color: #64748b;
+        font-size: 0.95rem;
+        margin-bottom: 35px;
+        display: block;
+    }
+
+    .form-group { 
+        margin-bottom: 24px; 
+        text-align: left; 
+    }
+
+    label { 
+        display: block; 
+        margin-bottom: 8px; 
+        color: var(--primary); 
+        font-weight: 700; 
+        font-size: 0.85rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        padding-left: 4px;
+    }
+
+    input[type="text"], input[type="password"] {
+        width: 100%; 
+        padding: 14px 18px; 
+        border: 2px solid #f1f5f9;
+        border-radius: 14px; 
+        box-sizing: border-box; 
+        font-size: 16px;
+        font-family: inherit;
+        background-color: #f8fafc;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        color: var(--primary);
+    }
+
+    input:focus {
+        outline: none;
+        border-color: var(--accent);
+        background-color: white;
+        box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+        transform: scale(1.01);
+    }
+
+    button {
+        width: 100%; 
+        padding: 16px; 
+        background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+        color: white; 
+        border: none; 
+        border-radius: 14px;
+        font-size: 16px; 
+        font-weight: 800; 
+        cursor: pointer; 
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        transition: all 0.3s;
+        margin-top: 10px;
+        box-shadow: 0 10px 15px -3px rgba(59, 130, 246, 0.3);
+    }
+
+    button:hover { 
+        transform: translateY(-2px);
+        box-shadow: 0 20px 25px -5px rgba(59, 130, 246, 0.4);
+        filter: brightness(1.1);
+    }
+
+    button:active {
+        transform: translateY(0);
+    }
+
+    /* Estilo para los errores */
+    .error { 
+        color: var(--danger); 
+        background-color: #fff1f2; 
+        padding: 12px; 
+        border-radius: 12px; 
+        margin-bottom: 25px; 
+        font-size: 14px;
+        font-weight: 600;
+        border: 1px solid #ffe4e6;
+        animation: shake 0.4s cubic-bezier(.36,.07,.19,.97) both;
+    }
+
+    @keyframes shake {
+        10%, 90% { transform: translate3d(-1px, 0, 0); }
+        20%, 80% { transform: translate3d(2px, 0, 0); }
+        30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
+        40%, 60% { transform: translate3d(4px, 0, 0); }
+    }
+
+    /* Decoración de pelota ⚽ opcional de fondo */
+    .bg-icon {
+        position: absolute;
+        font-size: 20rem;
+        opacity: 0.02;
+        z-index: -1;
+        bottom: -5rem;
+        right: -5rem;
+        transform: rotate(-15deg);
+    }
+</style>
 </head>
 <body>
 

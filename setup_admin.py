@@ -1,7 +1,7 @@
 import pyodbc
 from werkzeug.security import generate_password_hash
 
-conn_str = 'Driver={SQL Server};Server=DEMONBANE;Database=SIGELFA;UID=LoginArb1;PWD=ArbPassword123;'
+conn_str = 'Driver={SQL Server};Server=DESKTOP-MDHMLTH;Database=SIGELFA;UID=sa;PWD=123456789;'
 conn = pyodbc.connect(conn_str, autocommit=True)
 cursor = conn.cursor()
 

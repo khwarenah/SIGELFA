@@ -3,23 +3,148 @@
 <head>
     <meta charset="UTF-8">
     <title>Generar Jornadas - SIGELFA</title>
-    <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f3f4f6; padding: 20px; }
-        .container { max-width: 800px; margin: 0 auto; }
-        .card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin-bottom: 20px; }
-        h2 { margin-top: 0; color: #1f2937; border-bottom: 2px solid #e5e7eb; padding-bottom: 10px; }
-        .btn-back { display: inline-block; margin-bottom: 15px; color: #8b5cf6; text-decoration: none; font-weight: bold; }
-        select { width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 4px; margin-bottom: 15px; font-size: 16px; }
-        button { background-color: #8b5cf6; color: white; padding: 12px; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; width: 100%; font-size: 16px; }
-        button:hover { background-color: #7c3aed; }
-        .alert { padding: 10px; border-radius: 4px; margin-bottom: 15px; font-weight: bold; text-align: center; }
-        .alert-success { background-color: #d1fae5; color: #065f46; }
-        .alert-error { background-color: #fee2e2; color: #991b1b; }
-        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
-        th, td { padding: 10px; text-align: center; border-bottom: 1px solid #e5e7eb; }
-        th { background-color: #f3f4f6; color: #374151; }
-        .vs { color: #ef4444; font-weight: bold; font-size: 14px; }
-    </style>
+<style>
+    :root {
+        --primary: #0f172a;
+        --accent: #3b82f6;
+        --success: #059669;
+        --danger: #ef4444;
+        --bg: #f8fafc;
+        --text: #1e293b;
+        --border: #e2e8f0;
+    }
+
+    body { 
+        font-family: 'Inter', 'Segoe UI', sans-serif; 
+        background-color: var(--bg); 
+        color: var(--text);
+        padding: 40px 20px;
+        margin: 0;
+    }
+
+    .container { max-width: 900px; margin: 0 auto; }
+
+    .card { 
+        background: white; 
+        padding: 30px; 
+        border-radius: 16px; 
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        margin-bottom: 24px; 
+        border: 1px solid var(--border);
+    }
+
+    h2 { 
+        margin-top: 0; 
+        color: var(--primary); 
+        font-weight: 800;
+        font-size: 1.5rem;
+        border-bottom: 1px solid var(--border); 
+        padding-bottom: 15px;
+        margin-bottom: 20px;
+    }
+
+    /* --- MEJORA DEL BOTÓN VOLVER --- */
+    .btn-back { 
+        display: inline-flex;
+        align-items: center;
+        gap: 8px; /* Espacio entre la flecha y el texto */
+        margin-bottom: 24px; 
+        color: #64748b; /* Un gris neutro elegante */
+        text-decoration: none; 
+        font-weight: 600; 
+        font-size: 14px;
+        padding: 8px 16px;
+        border-radius: 8px;
+        background-color: white;
+        border: 1px solid var(--border);
+        transition: all 0.2s ease;
+        box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+    }
+
+    .btn-back:hover { 
+        color: var(--primary); 
+        background-color: #f1f5f9;
+        border-color: #cbd5e1;
+        transform: translateX(-4px); /* Efecto visual de "retroceder" */
+    }
+    /* ------------------------------ */
+
+    select { 
+        width: 100%; 
+        padding: 12px; 
+        border: 1px solid var(--border); 
+        border-radius: 8px; 
+        margin-bottom: 20px; 
+        font-size: 15px;
+        background-color: #fff;
+        color: var(--text);
+        outline: none;
+        transition: border-color 0.2s;
+    }
+    select:focus { border-color: var(--accent); }
+
+    button { 
+        background-color: var(--accent); 
+        color: white; 
+        padding: 14px; 
+        border: none; 
+        border-radius: 8px; 
+        cursor: pointer; 
+        font-weight: 700; 
+        width: 100%; 
+        font-size: 15px; 
+        transition: all 0.2s;
+    }
+    button:hover { 
+        background-color: #2563eb; 
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+    }
+
+    .alert { 
+        padding: 12px; 
+        border-radius: 8px; 
+        margin-bottom: 20px; 
+        font-weight: 600; 
+        text-align: center; 
+        font-size: 14px;
+    }
+    .alert-success { background-color: #d1fae5; color: #065f46; border: 1px solid #a7f3d0; }
+    .alert-error { background-color: #fee2e2; color: #991b1b; border: 1px solid #fecaca; }
+
+    table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+    
+    th { 
+        text-align: center;
+        padding: 14px;
+        background-color: #f1f5f9; 
+        color: #475569; 
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        font-weight: 700;
+    }
+
+    td { 
+        padding: 16px 10px; 
+        text-align: center; 
+        border-bottom: 1px solid var(--border);
+        font-size: 14px;
+    }
+
+    tr:last-child td { border-bottom: none; }
+
+    .vs { 
+        color: var(--danger); 
+        font-weight: 800; 
+        font-size: 12px;
+        background: #fef2f2;
+        padding: 4px 8px;
+        border-radius: 4px;
+    }
+
+    .team-name { font-weight: 600; color: var(--primary); }
+</style>
 </head>
 <body>
 

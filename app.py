@@ -13,10 +13,10 @@ app.secret_key = 'sigelfa_super_secreta_2024'
 # Configuración de la base de datos
 CONN_STR = (
     'Driver={ODBC Driver 17 for SQL Server};'
-    'Server=DEMONBANE;'
+    'Server=DESKTOP-MDHMLTH;'
     'Database=SIGELFA;'
-    'UID=LoginArb1;'
-    'PWD=ArbPassword123;'
+    'UID=sa;'
+    'PWD=123456789;'
 )
 
 def get_db_connection():
